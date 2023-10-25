@@ -1,0 +1,164 @@
+1.CREATE DEFINER=`root`@`localhost` PROCEDURE `track_character`(in name varchar(50),out cname varchar(50) ,out pname varchar(50),out movie varchar(10),out length int)
+BEGIN
+declare finished int default 0;
+declare ta int;
+declare td int;
+declare curForName cursor for select*from timetable where CharacterName=name;
+
+declare continue handler for not found set finished =1;
+
+open curForName;
+getName:loop
+fetch curForName into cname,pname,movie,ta,td;
+
+if finished=1 then
+leave getName;
+end if;
+
+set length=td-ta;
+
+end loop getName;
+close  curForName;
+
+
+END
+
+call track_character('Rancor',@cname,@pname,@movie,@length);
+
+select @cname,@pname,@movie,@length;
+
+
+2.
+CREATE DEFINER=`root`@`localhost` PROCEDURE `track_character`(in name varchar(50),out cname varchar(50) ,out pname varchar(50),out movie varchar(10),out length int)
+BEGIN
+declare finished int default 0;
+declare ta int;
+declare td int;
+declare curForName cursor for select*from timetable where CharacterName=name;
+
+declare continue handler for not found set finished =1;
+
+open curForName;
+getName:loop
+fetch curForName into cname,pname,movie,ta,td;
+
+if finished=1 then
+leave getName;
+end if;
+
+set length=td-ta;
+
+end loop getName;
+close  curForName;
+
+call track_planet('Tatoonie',@cname,@movie,@noofchar);
+
+select @cname,@movie,@noofchar;
+END
+
+
+3.
+CREATE DEFINER=`root`@`localhost` FUNCTION `planet_hopping`(cname varchar(20)) RETURNS int
+    DETERMINISTIC
+BEGIN
+declare finished int default 0;
+declare NumberofPlanets int;
+
+declare curForName cursor for select count(distinct PlanetName) as No_of_Planets  from timetable where 
+CharacterName=cname;
+declare continue handler for not found set finished=1;
+
+open curForName;
+loopname:loop
+fetch curForName into NumberofPlanets;
+if finished=1 then
+ leave loopname;
+end if; 
+ 
+end loop loopname;
+close curForName;
+RETURN NumberofPlanets;
+END
+
+select planet_hopping('Han Solo');
+
+4.
+CREATE DEFINER=`root`@`localhost` FUNCTION `planet_most_visited`(cname VARCHAR(255)) RETURNS varchar(255) CHARSET utf8mb4
+    DETERMINISTIC
+BEGIN
+    DECLARE mostVisitedPlanet VARCHAR(255);
+    DECLARE maxSceneCount INT;
+    declare charname varchar(20);
+    declare finished int default 0;
+   
+   
+   declare curForName cursor for
+  select CharacterName, max(Time_of_departure-Time_of_Arrival)as scene_count from timetable 
+  where CharacterName=cname group by CharacterName;
+  
+  declare continue handler for not found set finished=1;
+
+open curForName;
+loopname:loop
+fetch curForName into charName,mostVisitedPlanet;
+if finished=1 then
+ leave loopname;
+end if; 
+    
+    end loop loopname;
+close curForName;
+    RETURN  charName;
+END
+
+  select planet_most_visited('han solo');
+
+5.
+CREATE DEFINER=`root`@`localhost` FUNCTION `home_affiliation_same`(character_name VARCHAR(50)) RETURNS tinyint(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE character_affiliation VARCHAR(50);
+    DECLARE character_homeworld VARCHAR(50);
+    DECLARE planet_affiliation VARCHAR(50);
+
+  
+    SELECT Affiliation,Homeworld INTO character_affiliation,character_homeworld
+    FROM Characters
+    WHERE Name = character_name;
+
+    SELECT Affiliation INTO planet_affiliation
+    FROM Planets
+    WHERE Name = character_homeworld;
+
+
+    IF character_affiliation IS NULL OR planet_affiliation IS NULL THEN
+        RETURN NULL;
+    END IF;
+
+    
+    IF character_affiliation = planet_affiliation THEN
+        RETURN TRUE;
+    ELSE
+        RETURN FALSE;
+    END IF;
+END
+
+  select home_affiliation_same('Luke Skywalker');
+
+6.
+CREATE DEFINER=`root`@`localhost` FUNCTION `planet_in_num_movies`(pname varchar(30)) RETURNS int
+    DETERMINISTIC
+BEGIN
+
+declare noofmovie int;
+select  count(movie) into noofmovie from timetable where PlanetName=pname;
+RETURN noofmovie;
+END
+
+select planet_in_num_movies('Bespin');
+
+7.CREATE DEFINER=`root`@`localhost` PROCEDURE `character_with_affiliation`(in saffilation varchar(100))
+BEGIN
+select*from characters where affiliation=saffilation;
+END
+
+CALL character_with_affiliation('rebel');

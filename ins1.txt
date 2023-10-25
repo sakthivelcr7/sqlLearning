@@ -1,0 +1,15 @@
+create table school(emp_id int primary key, emp_name varchar(20) not null);
+create table hostel(emp_id int primary key, hos_name varchar(20) not null);\
+
+insert into school values(1,'raju'),(2,'sonu'),(3,'nirmal'),(4,'riyaz');
+
+
+insert into hostel values(1,'besant'),(2,'siddu'),(3,'marina'),(4,'siruseri');
+
+insert into hostel values(6,'best'),(5,'murali');
+
+select school.emp_id,school.emp_name, hos_name from school left join hostel on school.emp_id= hostel.emp_id;
+insert into school values(5,'rtyhraju'),(6,'cghdtrhsonu'),(7,'nfhirmal'),(8,'riyfhaz');	
+  
+
+

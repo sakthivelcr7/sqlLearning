@@ -1,0 +1,21 @@
+create table courses(
+course_id int primary key,
+course_name varchar(50) not null,
+course_duration int not null,
+course_fees int not null,
+course_topic text
+);
+
+alter table trainer add column course_id int;
+
+alter table trainer add foreign key(course_id) references courses(course_id);//
+
+insert into courses values
+
+(1,'java',60,1800,null),
+(2,'software testing',60,1800,null),
+(3,'cyber security',40,1800,null),
+(4,'web development',50,1800,null)
+(5,'.Net',100,1800,null)
+(6,'data science',75,1800,null)
+(7,'machine learning',30,1800,null);

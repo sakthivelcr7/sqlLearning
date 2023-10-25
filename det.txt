@@ -1,0 +1,37 @@
+CREATE PROCEDURE getDetection (in salary bigint,in gender char(1),out detection bigint)
+BEGIN
+declare val int default 0;
+declare cat varchar(2) default "";
+
+declare  flag int default 0;
+declare curForName cursor for select ifnull(percentage,0),ifnull(catagory,'v')from detection;
+declare continue handler for not found set finished=1;
+set detection=0;
+open curForName;
+getName :loop
+fetch curForName into val,cat;
+if finished =1 then
+leave getName;
+end if;
+if cat='f' then
+     if gender ='m' and salary>8000 and flag=0 then
+           set detection =detection+200;
+     set flag=1;
+elseif gender ='m' and salary<=8000 and flag=0 then
+set detection =detection+150;
+set flag=1;
+if gender ='f' and salary>25000 and flag=0 then
+set detection =detection+200;
+set flag=1;
+if gender ='f' and salary<=25000 and flag=0 then
+set detection =detection+200;
+set flag=1;
+end if;
+else
+set detection= detection+(salary*val/100);
+end if;
+-- insert into log values(concat(gender,val,cat,detection));
+end loop getName;
+close curForName;
+
+end

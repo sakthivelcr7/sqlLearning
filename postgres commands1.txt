@@ -1,0 +1,72 @@
+connect to a database in postgres
+
+
+
+--select firstname and lastname
+ select first_name ||' '|| last_name from customer;
+
+select first_name||' '||last_name as fullname from customer order by first_name;
+
+select first_name||' '||last_name as fullname from customer order by first_name desc;
+
+select first_name ,length(first_name)len from customer;
+
+select first_name ,length(first_name)len from customer order by len;
+
+create table scores (num int) ;
+insert into scores(num) values (181),(264),(223),(null);
+
+select num from scores;
+
+
+select num from scores order by num null;
+
+select customer_id from payment;
+
+select distinct customer_id from payment;
+
+select distinct customer_id,staff_id from payment;
+-----------------------------------------------
+
+
+select first_name||' '||last_name as fullname from customer order by first_name;
+
+select first_name||' '||last_name as fullname from customer order by first_name desc;
+
+select first_name ,length(first_name)len from customer;
+
+select first_name ,length(first_name)len from customer order by len;
+
+select customer_id from payment;
+
+select distinct customer_id from payment;
+
+select distinct customer_id,staff_id from payment;
+
+select distinct customer_id,staff_id from payment order by customer_id;
+
+
+select a,fruit_a,b,fruit_b from basket_a inner join basket_b on fruit_a=fruit_b;
+
+select a,fruit_a,b,fruit_b from basket_a full join basket_b on fruit_a=fruit_b 
+where a is null or b is null
+;
+
+
+select first_name,last_name, first_name||' '||last_name as full_name from customer;
+select city ,count(*)from city group by  city;
+
+select city.city, city.country_id from city inner join country on 
+city.country_id=country.country_id;
+
+
+
+
+
+
+
+select distinct customer_id,staff_id from payment order by customer_id;
+
+
+
+select customer_id from rental where cast(return_date as date)='2005-05-27';

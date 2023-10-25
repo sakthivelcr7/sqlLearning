@@ -1,0 +1,15 @@
+1) select *from hotel_chennai;
+
+2) select *from hotel_chennai where H_city='newyork';
+
+3) select g_name,g_city from guest order by g_city;
+
+4) select * from room  where room_type='N' order by room_price;
+
+5)  select COUNT(h_name) from hotel_chennai;
+
+6) SELECT DISTINCT(G_CITY) FROM GUEST;
+
+7) select avg(room_price)average_price from room;
+
+10)select count(date_from) from booking where date_from='---%09';

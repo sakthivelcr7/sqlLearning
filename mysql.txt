@@ -1,0 +1,43 @@
+create table changepond.payment_info
+(
+payment_id int(10) auto_increment primary key,
+payment_type  varchar(20) not null,
+merchant_type varchar(10),
+created_dt datetime not null
+)
+
+alter TABLE changepond.payment_info
+change created_dt created_dt datetime not null default CURRENT_TIMESTAMP;
+ 
+ALTER table changepond.payment_info
+change transaction_type transaction_type varchar(30) not null 
+
+
+alter table changepond.payment_info
+rename column payment_type to transaction_type;
+
+
+create table changepond.employee(emp_id int primary key,emp_name varchar(10) not null,emp_dept varchar(20) ,emp_salary bigint(10));
+
+create table room (
+room_no int(2) primary key,
+hotel_no int(2) unique not null ,
+room_type varchar(10) not null,
+room_price int(10) not null
+);
+
+create table booking(
+hotel_no int(2) unique not null,
+guest_no int(2) unique not null,
+date_from  date not null,
+date_to  date not null,
+room_no int(2) unique not null,
+primary key(hotel_no,room_no)
+);
+
+create table guest (
+guest_no int(2) primary key,
+g_name varchar(10) not null,
+g_city varchar(10) not null
+);
+

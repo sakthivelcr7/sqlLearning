@@ -1,0 +1,54 @@
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertNewContact`(institute_name varchar(50),city varchar(50),state varchar(50),country varchar(50),address1 varchar(200),
+pincode  varCHAR(10), email varchar(100),mobile mediumtext)
+BEGIN
+    declare institute_id int;
+    select ins_name into institute_name from institute where ins_name=institute_name;
+    
+    
+    insert into contact_details(ins_id,city,state,country,street_address,pincode,cemail,cmobile)
+    values(institute_id,city,state,country,street_address,pincode,email,mobile);
+END
+
+
+-----------------------------------------------------------------------------------------------------------
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getSalaryReportsYearWise`(
+in cal_year int,
+out no_of_employees int,
+out max_salary_employee int,
+out min_salary_employee int,
+out avg_salary_employee int,
+out total_salary_employee bigint
+)
+BEGIN
+select count(*),min(salary),max(salary),avg(salary),
+sum(salary) into no_of_employees, max_salary_employee,min_salary_employee,avg_salary_employee,
+total_salary_employee from salaries where year(from_date)=cal_year;
+END
+
+
+-----------------------------------------------------------------------------------------
+
+cursor concept:
+--------------
+
+create procedure getFullName(
+inout fullNameList text)
+begin 
+
+declare finished int default 0;
+declare fullname text default "";
+declare continue handler for not found set finished=1;
+declare curForName cursor for select concat(first_name,' ',last_name) from employees limit 10;
+
+open curForName;
+getName:Loop
+fetch curForName into fullname;
+if finished=1  then 
+   leave getName;
+end if;
+set fullNameList=concat(fullname,fullNameList);
+End loop getName;
+
+close curForName;
+END

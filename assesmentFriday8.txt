@@ -1,0 +1,84 @@
+1.SELECT DISTINCT p.Name
+FROM Physician p
+JOIN Trained_In t ON p.EmployeeID = t.Physician
+JOIN Procedures pr ON t.Treatment = pr.Code
+WHERE pr.Code NOT IN (SELECT t2.Treatment FROM Trained_In t2 WHERE t2.Physician = p.EmployeeID);
+
+2.SELECT
+    p.Name AS PhysicianName,
+    pr.Name AS ProcedureName,
+    u.DateUndergoes AS ProcedureDate,
+    pa.Name AS PatientName
+FROM Physician p
+JOIN Undergoes u ON p.EmployeeID = u.Physician
+JOIN Procedures pr ON u.Procedures = pr.Code
+JOIN Patient pa ON u.Patient = pa.SSN
+WHERE pr.Code NOT IN (SELECT t2.Treatment FROM Trained_In t2 WHERE t2.Physician = p.EmployeeID);
+
+3.SELECT DISTINCT p.Name
+FROM Physician p
+JOIN Trained_In t ON p.EmployeeID = t.Physician
+JOIN Procedures pr ON t.Treatment = pr.Code
+JOIN Undergoes u ON p.EmployeeID = u.Physician AND pr.Code = u.Procedures
+WHERE u.DateUndergoes > t.CertificationExpires;
+
+4.SELECT
+    p.Name AS PhysicianName,
+    pr.Name AS ProcedureName,
+    u.DateUndergoes AS ProcedureDate,
+    pa.Name AS PatientName,
+    t.CertificationExpires AS CertificationExpirationDate
+FROM Physician p
+JOIN Trained_In t ON p.EmployeeID = t.Physician
+JOIN Procedures pr ON t.Treatment = pr.Code
+JOIN Undergoes u ON p.EmployeeID = u.Physician AND pr.Code = u.Procedures
+JOIN Patient pa ON u.Patient = pa.SSN
+WHERE u.DateUndergoes > t.CertificationExpires;
+
+5.SELECT
+    p1.Name AS PatientName,
+    p2.Name AS PhysicianName,
+    n.Name AS NurseName,
+    a.Start AS StartTime,
+    a.End AS EndTime,
+    a.ExaminationRoom,
+    p3.Name AS PrimaryCarePhysician
+FROM Appointment a
+JOIN Patient p1 ON a.Patient = p1.SSN
+JOIN Physician p2 ON a.Physician = p2.EmployeeID
+LEFT JOIN Nurse n ON a.PrepNurse = n.EmployeeID
+JOIN Patient p3 ON p1.PCP = p3.SSN
+WHERE a.Physician <> p1.PCP;
+
+6.SELECT *
+FROM Undergoes u
+LEFT JOIN Stay s ON u.Stay = s.StayID
+WHERE u.Patient <> s.Patient;
+
+7.SELECT DISTINCT n.Name
+FROM Nurse n
+JOIN On_Call oc ON n.EmployeeID = oc.Nurse
+WHERE oc.BlockFloor = 1 AND oc.BlockCode = 2;
+
+
+8.SELECT ExaminationRoom, COUNT(*) AS NumAppointments
+FROM Appointment
+GROUP BY ExaminationRoom;
+
+9.SELECT DISTINCT p1.Name AS PatientName, p2.Name AS PrimaryCarePhysician
+FROM Patient p1
+JOIN Prescribes pr ON p1.SSN = pr.Patient
+JOIN Medication m ON pr.Medication = m.Code
+JOIN Undergoes u ON p1.SSN = u.Patient
+JOIN Procedures proc ON u.Procedures = proc.Code
+JOIN Appointment a ON p1.SSN = a.Patient
+JOIN Nurse n ON a.PrepNurse = n.EmployeeID
+JOIN Physician p2 ON p1.PCP = p2.EmployeeID
+LEFT JOIN Affiliated_With aw ON p2.EmployeeID = aw.Physician
+WHERE
+    m.Description IS NOT NULL
+    AND proc.Cost > 5000
+    AND n.Registered = 1
+    AND aw.Department IS NULL
+GROUP BY p1.SSN, p1.Name, p2.Name
+HAVING COUNT(DISTINCT n.EmployeeID) >= 2;

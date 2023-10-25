@@ -1,0 +1,91 @@
+select ins_name as "institute name", ins__affiliated as "Affiliated" from institute;
+
+create table trainer(
+tid int primary key,
+tfnamw varchar(30) not null,
+tmname varchar(20),
+tlname varchar(10) not null,
+tdob date not null,
+tsalary bigint(15),
+trole varchar(40) not null,
+created_dt datetime default current_timestamp,
+created_by varchar(10),
+updated_dt datetime,
+updated_by varchar(10)
+);
+insert into trainer values(
+1,'sakthivel','hh','R','2332-01-10',10000,'dev',current_timestamp,'sakthi',null,null),
+(2,'yesh','hh','R','2332-01-10',100010,'test',current_timestamp,'yesh',null,null),
+(3,'raju','kk','j','2332-01-10',100,'cleaner',current_timestamp,'rajuan',null,null),
+(4,'sundhar','ss','p','2332-01-10',200,'ceo',current_timestamp,'sunti',null,null);
+
+
+
+select substring_index(ins_name,' ',2)from institute;
+select concat_Ws('-',tfnamw,tlname) from trainer;
+
+select *from institute;
+
+select replace (created_by,'root@localhost','Root') from institute;
+
+
+insert into hotel_chennai values('h111','empire_hotel','newwork'),
+('h234','parkpalace','newyork'),
+('h432','brownstone','torando'),('h498','james plaza','torando'),('h193','devon hotel','boston'),('h437','clairmont hotel','boston');
+
+insert into room values(
+313,'h111','s','145.00'),
+(412,'h111','N','145.00'),
+(1267,'h235','N','175.00'),
+(1289,'h235','N','195.00'),
+(876,'h432','s','124.00'),
+(898,'h432','s','124.00'),
+(345,'h498','N','160.00'),
+(467,'h498','N','180.00'),
+(1001,'h193','s','150.00'),
+(1201,'h193','N','175.00'),
+(257,'h437','N','140.00'),
+(223,'h437','N','155.00');
+
+
+insert into guest values(
+'g256','adam wayne', 'pittuburgh'),
+(
+'g367','tara cummings', 'paltimore'),
+(
+'g879','vanesa pari', 'pittuburgh'),
+(
+'g230','dom han cock', 'philatelphia'),
+(
+'g467','robustshift', 'atlanda'),
+(
+'g190','edvertcan', 'paltimore');
+
+
+insert into trainer values(
+5,'gopi','hh','R','2332-01-10',10000,'trainer',current_timestamp,'sakthi',null,null),
+(6,'malai','hh','R','2332-01-10',100010,'trainer',current_timestamp,'yesh',null,null),
+(7,'rajkumar','kk','j','2332-01-10',100,'ceo',current_timestamp,'rajuan',null,null),
+(8,'mani','ss','p','2332-01-10',200,'manager',current_timestamp,'sunti',null,null);
+
+
+insert into booking values
+('h111','g256','99-08-10','99-08-15',412),
+('h111','g367','99-08-18','99-08-21',412),
+('h235','g879','99-09-05','99-09-12',1267),
+('h498','g230','99-09-15','99-09-18',467),
+('h498','g256','99-11-30','99-11-02',345),
+('h498','g467','99-11-03','99-11-05',345),
+('h193','g190','99-11-15','99-11-19',1001),
+('h193','g367','99-09-12','99-09-14',1001),
+('h193','g367','99-10-01','99-10-06',1201),
+('h437','g190','99-10-04','99-10-06',223),
+('h437','g879','99-10-14','99-10-17',223);
+
+
+
+
+
+
+
+
